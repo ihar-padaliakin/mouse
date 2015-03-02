@@ -9,15 +9,22 @@ using namespace std;
 
 int main() {
     XManager manager;
+    TelemetryService service;
     for (;;) {
         if (!manager.waitForStart()) {
             return 0;
         }
         manager.grab();
         Telemetry *telemtery = manager.getTelemetry();
-        for (auto *point : *telemtery->getTelemetry()) {
-            cout << point->x << " | " << point->y << endl;
+//        for (auto *point : *telemtery->getTelemetry()) {
+//            cout << point->x << " | " << point->y << endl;
+//        }
+        VectorisedTelemetry* vects = service.vectorize(telemtery);
+        if (vects != nullptr && vects->compare(NULL)) {
+            cout << "wow" << std::endl;
         }
+        cout << endl<<endl;
+        delete vects;
         delete telemtery;
         manager.ungrab();
     }
