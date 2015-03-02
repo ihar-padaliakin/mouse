@@ -4,10 +4,10 @@
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
 #include "display.h"
-
-using namespace std;
+#include "telemetry.h"
 
 int main() {
+    Config config;
     XManager manager;
     TelemetryService service;
     for (;;) {
@@ -20,10 +20,10 @@ int main() {
 //            cout << point->x << " | " << point->y << endl;
 //        }
         VectorisedTelemetry* vects = service.vectorize(telemtery);
-        if (vects != nullptr && vects->compare(NULL)) {
-            cout << "wow" << std::endl;
+        if (vects != nullptr) {
+            service.findAndExecute(vects, &config);
         }
-        cout << endl<<endl;
+        std::cout << std::endl << std::endl;
         delete vects;
         delete telemtery;
         manager.ungrab();

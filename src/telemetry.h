@@ -11,6 +11,7 @@
 #define EPSILON .3
 
 #include <list>
+#include <string>
 
 typedef struct {
     int x, y;
@@ -26,6 +27,7 @@ class Telemetry {
         std::list<Point*> *getTelemetry();
 };
 
+
 typedef struct {
     double x, y;
     int length;
@@ -37,13 +39,30 @@ class VectorisedTelemetry {
     public:
         VectorisedTelemetry(std::list<Vector*> *telemetry) : telemetry(telemetry) {};
         ~VectorisedTelemetry();
-        bool compare(VectorisedTelemetry *telemetry);
+        std::list<Vector*> *getTelemetry();
+};
+
+typedef struct {
+    VectorisedTelemetry* telemetry;
+    std::string action;
+} Action;
+
+class Config {
+    private:
+    std::list<Action*> *telemetry;
+    public:
+        Config();
+        ~Config();
+        std::list<Action*> const * getAll();
 };
 
 class TelemetryService {
     private:
+        double length(Point *firstPoint, Point *secondPoint);
         Vector* calculateVector(Point *firstPoint, Point *secondPoint);
     public:
         VectorisedTelemetry* vectorize(Telemetry* telemetry);
+        void findAndExecute(VectorisedTelemetry * telemetry, Config *config);
 };
+
 #endif /* TELEMETRY_H_ */
